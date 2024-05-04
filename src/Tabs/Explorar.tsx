@@ -1,31 +1,50 @@
-import { VStack, Image, Text, ScrollView, Box, Divider } from 'native-base'
-import Logo from '../assets/Logo.png'
-import { Titulo } from '../componentes/Titulo'
-import { sessaoPrincipal } from '../utils/PrincipalEntradaTexto'
-import { CardBusca } from '../componentes/CardBusca'
-import { especialistas } from '../utils/ConsultasEntradaTexto'
-import { CardConsulta } from '../componentes/CardConsulta'
+import React from 'react';
+import { VStack, ScrollView, Text, Box, Center, HStack } from 'native-base';
+import { relatorioEstrategico } from '../utils/Dados';
+import { Titulo } from '../componentes/Titulo';
 
 export default function Explorar() {
-    return (
-        <ScrollView flex={1} p={5} >
-            <VStack flex={1} color="#FFF" mb={10} >
-                <CardBusca />
+  const { numeroClientesFieis, numeroCartoesCompletos, numeroPremiosCompletos, topClientesFieis } = relatorioEstrategico;
 
-                <Titulo color="blue.500" textAlign={"center"} mt={5}>Resultado da Busca</Titulo>
-                {
-                    especialistas.map((consulta) => (
-
-                        <CardConsulta
-                            nome={consulta.nome}
-                            especialidade={consulta.especialidade}
-                            foto={consulta.foto}
-                            data={consulta.data}
-                            foiAgendado={false}
-                        />
-                    ))
-                }
-            </VStack>
-        </ScrollView>
-    )
+  return (
+    <ScrollView flex={1} p={5}>
+      <Center>
+        <VStack space={4} alignItems="center">
+          <Titulo color="blue.500" fontSize="lg">Relatório Estratégico</Titulo>
+          <Box
+            bg="white"
+            p={4}
+            borderRadius={16}
+            shadow={2}
+            w="100%"
+          >
+            <Text fontWeight="bold" fontSize="md" mb={2}>
+              Número de Clientes Fiéis: {numeroClientesFieis}
+            </Text>
+            <Text fontWeight="bold" fontSize="md" mb={2}>
+              Número de Cartões Completos: {numeroCartoesCompletos}
+            </Text>
+            <Text fontWeight="bold" fontSize="md" mb={2}>
+              Número de Prêmios Resgatados: {numeroPremiosCompletos}
+            </Text>
+          </Box>
+          <Box
+            bg="white"
+            p={4}
+            borderRadius={16}
+            shadow={2}
+            w="100%"
+          >
+            <Titulo color="blue.500" fontSize="md" mb={2}>Top 5 Clientes Mais Fiéis</Titulo>
+            {topClientesFieis.map((cliente, index) => (
+              <HStack key={index} justifyContent="space-between" mb={2}>
+                <Text fontWeight="bold" fontSize="md">{index + 1}. {cliente.nome}</Text>
+                <Text fontWeight="bold" fontSize="md">Cartões Completos: {cliente.completos}</Text>
+              </HStack>
+            ))}
+          </Box>
+        </VStack>
+      </Center>
+    </ScrollView>
+  );
 }
